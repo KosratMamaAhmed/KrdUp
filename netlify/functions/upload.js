@@ -15,21 +15,26 @@ export default async (req) => {
 
   const uploadManager = new Bytescale.UploadManager({
     apiKey: process.env.UPLOAD_IO_PUBLIC_KEY,
-fetchApi: fetch
+    fetchApi: fetch
   });
 
-  const { fileUrl, filePath } = await uploadManager.uploadFile(file);
-  const id = uuid();
+  try {
+    const { fileUrl, filePath } = await uploadManager.uploadFile(file);
+    const id = uuid();
 
-  const store = getStore("files");
-  await store.setJSON(id, {
-    fileUrl,
-    filePath,
-    downloads: 0,
-    uploadedAt: Date.now()
-  });
+    const store = getStore("files");
+    await store.setJSON(id, {
+      fileUrl,
+      filePath,
+      downloads: 0,
+      uploadedAt: Date.now()
+    });
 
-  return new Response(JSON.stringify({ id, fileUrl }), {
-    headers: { "Content-Type": "application/json" }
-  });
+    return new Response(JSON.stringify({ id, fileUrl }), {
+      headers: { "Content-Type": "application/json" }
+    });
+  } catch (error) {
+    console.error("Upload failed:", error);
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+  }
 };

@@ -19,7 +19,7 @@ export default async (req) => {
   const store = getStore("files");
   const fileApi = new Bytescale.FileApi({
     apiKey: process.env.UPLOAD_IO_SECRET_KEY,
-fetchApi: fetch
+    fetchApi: fetch
   });
 
   if (action === "list") {
