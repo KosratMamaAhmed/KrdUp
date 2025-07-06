@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ku">
+<head>
+  <meta charset="utf-8" />
+  <title>File Uploader</title>
+</head>
+<body>
+  <h1>فایل بیکە سەرەوە</h1>
+  <input type="file" id="file" />
+  <div id="result"></div>
+  <script>
+    document.getElementById("file").addEventListener("change", async (e) => {
+      const fd = new FormData();
+      fd.append("file", e.target.files[0]);
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      const json = await res.json();
+      const link = `${location.origin}/d/${json.id}`;
+      document.getElementById("result").innerHTML = `<p><a href="${link}" target="_blank">${link}</a></p>`;
+    });
+  </script>
+</body>
+</html>

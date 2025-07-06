@@ -1,0 +1,14 @@
+[build]
+functions = "netlify/functions"
+publish = "public"
+
+[[redirects]]
+  from = "/d/:id"
+  to = "/.netlify/functions/download?id=:id"
+  status = 200
+  force = true
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200

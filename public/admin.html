@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Admin Panel</title>
+</head>
+<body>
+  <h1>File Manager</h1>
+  <table id="tbl"></table>
+  <script>
+    const token = prompt("Enter admin token");
+    async function load() {
+      const res = await fetch(`/api/admin?action=list`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      const files = await res.json();
+      const tbl = document.getElementById("tbl");
+      tbl.innerHTML = `<tr><th>ID</th><th>Name</th><th>Downloads</th><th></th></tr>` +
+        files
+          .map(
+            (f) =>
+              `<tr><td>${f.id}</td><td><a href="/d/${f.id}" target="_blank">${f.filePath.split("/").pop()}</a></td><td>${f.downloads}</td><td><button onclick="del('${f.id}')">🗑️</button></td></tr>`
+          )
+          .join("");
+    }
+    async function del(id) {
+      await fetch(`/api/admin?action=delete&id=${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      load();
+    }
+    load();
+  </script>
+</body>
+</html>
