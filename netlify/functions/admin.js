@@ -1,6 +1,5 @@
 import * as Bytescale from "@bytescale/sdk";
 import { getStore } from "@netlify/blobs";
-import nodeFetch from "node-fetch";
 
 const ok = (data) =>
   new Response(JSON.stringify(data), {
@@ -20,7 +19,7 @@ export default async (req) => {
   const store = getStore("files");
   const fileApi = new Bytescale.FileApi({
     apiKey: process.env.UPLOAD_IO_SECRET_KEY,
-    fetchApi: nodeFetch
+fetchApi: fetch
   });
 
   if (action === "list") {

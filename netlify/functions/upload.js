@@ -1,7 +1,6 @@
 import * as Bytescale from "@bytescale/sdk";
 import { getStore } from "@netlify/blobs";
 import { v4 as uuid } from "uuid";
-import nodeFetch from "node-fetch";
 
 export default async (req) => {
   if (req.method !== "POST") {
@@ -16,7 +15,7 @@ export default async (req) => {
 
   const uploadManager = new Bytescale.UploadManager({
     apiKey: process.env.UPLOAD_IO_PUBLIC_KEY,
-    fetchApi: nodeFetch
+fetchApi: fetch
   });
 
   const { fileUrl, filePath } = await uploadManager.uploadFile(file);
